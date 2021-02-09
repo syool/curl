@@ -24,8 +24,6 @@ import tensorflow_probability as tfp
 import layers
 import utils
 
-tfc = tf
-
 # pylint: disable=g-long-lambda
 # pylint: disable=redefined-outer-name
 
@@ -85,7 +83,7 @@ def cluster_encoder_fn(hiddens, n_y_active, n_y, is_training=True):
     The distribution `q(y | x)`.
   """
   del is_training  # unused for now
-  with tf.control_dependencies([tfc.assert_rank(hiddens, 2)]):
+  with tf.control_dependencies([tf.assert_rank(hiddens, 2)]):
     lin = snt.Linear(n_y, name='mlp_cluster_encoder_final')
     logits = lin(hiddens)
 
@@ -120,7 +118,7 @@ def latent_encoder_fn(hiddens, y, n_y, n_z, is_training=True):
   """
   del is_training  # unused for now
 
-  with tf.control_dependencies([tfc.assert_rank(hiddens, 2)]):
+  with tf.control_dependencies([tf.assert_rank(hiddens, 2)]):
     # Logits for both mean and variance
     n_logits = 2 * n_z
 
@@ -439,7 +437,7 @@ class Curl(object):
       if y is not None:
         self.y_label = tf.one_hot(y, n_y)
       else:
-        self.y_label = tfc.placeholder(
+        self.y_label = tf.placeholder(
             shape=[bs, n_y], dtype=tf.float32, name='y_label')
 
       # This is computing log p(x | z, y=true_y)], which is basically equivalent
@@ -485,7 +483,7 @@ class Curl(object):
       `[B]`, where `B` is the batch size), and `y` is a sample from the
       categorical encoding distribution.
     """
-    with tf.control_dependencies([tfc.assert_rank(hiddens, 2)]):
+    with tf.control_dependencies([tf.assert_rank(hiddens, 2)]):
       q = self.infer_cluster(hiddens)  # q(y|x)
     p = self.compute_prior()  # p(y)
     try:
@@ -534,7 +532,7 @@ class Curl(object):
       `[B]`, where `B` is the batch size), and `z` is a sample from the encoding
       distribution.
     """
-    with tf.control_dependencies([tfc.assert_rank(hiddens, 2)]):
+    with tf.control_dependencies([tf.assert_rank(hiddens, 2)]):
       q = self.infer_latent(hiddens, y)  # q(z|x,y)
     p = self.generate_latent(y)  # p(z|y)
     z = q.sample(name='z')
@@ -571,7 +569,7 @@ class Curl(object):
       `[N, B, ...]` where `B` is the batch size of `x` and `y`, and `N` is the
       number of samples and `...` represents the shape of the latent variables.
     """
-    with tf.control_dependencies([tfc.assert_rank(hiddens, 2)]):
+    with tf.control_dependencies([tf.assert_rank(hiddens, 2)]):
       if y is None:
         y = tf.to_float(self.infer_cluster(hiddens).mode())
 
@@ -630,7 +628,7 @@ class Curl(object):
       `[N, B, ...]` where `B` is the batch size of `x`, and `N` is the number of
       samples asked and `...` represents the shape of the latent variables.
     """
-    with tf.control_dependencies([tfc.assert_rank(hiddens, 2)]):
+    with tf.control_dependencies([tf.assert_rank(hiddens, 2)]):
       return self._cluster_encoder(hiddens, is_training=self._is_training)
 
   def predict(self, z, y):

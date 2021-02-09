@@ -29,8 +29,6 @@ import tensorflow_probability as tfp
 import model
 import utils
 
-tfc = tf
-
 # pylint: disable=g-long-lambda
 
 MainOps = collections.namedtuple('MainOps', [
@@ -351,7 +349,7 @@ def setup_dynamic_ops(n_y):
   latent_enc_assign_ops = {}
   latent_enc_phs = {}
   for key, tensor in latent_enc_tensors.items():
-    latent_enc_phs[key] = tfc.placeholder(tensor.dtype, tensor.shape)
+    latent_enc_phs[key] = tf.placeholder(tensor.dtype, tensor.shape)
     latent_enc_assign_ops[key] = tf.assign(tensor, latent_enc_phs[key])
 
   # 2) Ops to get and set cluster encoder params (columns of a tensor)
@@ -361,8 +359,8 @@ def setup_dynamic_ops(n_y):
   cluster_b = graph.get_tensor_by_name(
       'cluster_encoder/mlp_cluster_encoder_final/b:0')
 
-  ind_from = tfc.placeholder(dtype=tf.int32)
-  ind_to = tfc.placeholder(dtype=tf.int32)
+  ind_from = tf.placeholder(dtype=tf.int32)
+  ind_to = tf.placeholder(dtype=tf.int32)
 
   # Determine indices of cluster encoder weights and biases to be updated
   w_indices = tf.transpose(
@@ -530,7 +528,7 @@ def run_training(
   """
 
   # Set tf random seed.
-  tfc.set_random_seed(random_seed)
+  tf.set_random_seed(random_seed)
   np.set_printoptions(precision=2, suppress=True)
 
   # First set up the data source(s) and get dataset info.
@@ -595,7 +593,7 @@ def run_training(
 
   # Define a global tf variable for the number of active components.
   n_y_active_np = n_y_active
-  n_y_active = tfc.get_variable(
+  n_y_active = tf.get_variable(
       initializer=tf.constant(n_y_active_np, dtype=tf.int32),
       trainable=False,
       name='n_y_active',
@@ -605,9 +603,9 @@ def run_training(
 
   # Set up placeholders for training.
 
-  x_train_raw = tfc.placeholder(
+  x_train_raw = tf.placeholder(
       dtype=tf.float32, shape=(batch_size,) + output_shape)
-  label_train = tfc.placeholder(dtype=tf.int32, shape=(batch_size,))
+  label_train = tf.placeholder(dtype=tf.int32, shape=(batch_size,))
 
   def binarize_fn(x):
     """Binarize a Bernoulli by rounding the probabilities.

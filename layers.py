@@ -19,8 +19,6 @@ from absl import logging
 import sonnet as snt
 import tensorflow.compat.v1 as tf
 
-tfc = tf
-
 
 class ResidualStack(snt.AbstractModule):
   """A stack of ResNet V2 blocks."""
@@ -89,7 +87,7 @@ class SharedConvModule(snt.AbstractModule):
     self.conv_shapes = None
 
   def _build(self, x, is_training=True):
-    with tf.control_dependencies([tfc.assert_rank(x, 4)]):
+    with tf.control_dependencies([tf.assert_rank(x, 4)]):
 
       self.conv_shapes = [x.shape.as_list()]  # Needed by deconv module
       conv = x
