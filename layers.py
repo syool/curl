@@ -19,7 +19,7 @@ from absl import logging
 import sonnet as snt
 import tensorflow.compat.v1 as tf
 
-tfc = tf.compat.v1
+tfc = tf
 
 
 class ResidualStack(snt.AbstractModule):

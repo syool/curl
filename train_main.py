@@ -33,7 +33,7 @@ reproduced by dividing this value by 10.
 from absl import app
 from absl import flags
 
-from curl import training
+import training
 
 flags.DEFINE_enum('dataset', 'mnist', ['mnist', 'omniglot'], 'Dataset.')
 

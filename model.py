@@ -21,10 +21,10 @@ import sonnet as snt
 import tensorflow.compat.v1 as tf
 import tensorflow_probability as tfp
 
-from curl import layers
-from curl import utils
+import layers
+import utils
 
-tfc = tf.compat.v1
+tfc = tf
 
 # pylint: disable=g-long-lambda
 # pylint: disable=redefined-outer-name

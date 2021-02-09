@@ -26,10 +26,10 @@ import tensorflow.compat.v1 as tf
 import tensorflow_datasets as tfds
 import tensorflow_probability as tfp
 
-from curl import model
-from curl import utils
+import model
+import utils
 
-tfc = tf.compat.v1
+tfc = tf
 
 # pylint: disable=g-long-lambda
 
