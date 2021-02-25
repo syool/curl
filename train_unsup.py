@@ -48,7 +48,7 @@ def main(unused_argv):
       lr_schedule=[1],
       blend_classes=False,
       train_supervised=False,
-      n_steps=100000,
+      n_steps=10000,
       report_interval=10000,
       knn_values=[3],
       random_seed=1,
